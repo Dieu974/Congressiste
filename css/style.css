@@ -1,0 +1,117 @@
+/* Simple, modern styles for the Congrès app */
+:root{
+  --bg:#f5f7fb;
+  --card:#ffffff;
+  --muted:#6b7280;
+  --accent:#2563eb;
+  --success:#28a745;
+  --danger:#dc3545;
+  --shadow: 0 6px 18px rgba(18,38,63,0.06);
+  --radius:8px;
+  --gap:12px;
+  --transition:200ms cubic-bezier(.2,.8,.2,1);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+  background:linear-gradient(180deg,var(--bg),#fff);
+  color:#0f172a;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  animation:fadeIn 220ms var(--transition) both;
+}
+
+/* layout */
+.container{
+  max-width:1100px;
+  margin:24px auto;
+  padding:18px;
+}
+
+/* header */
+.site-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:18px;
+}
+.site-title{font-weight:700;font-size:1.15rem}
+.nav a{margin-right:10px;color:var(--muted);text-decoration:none;transition:color var(--transition)}
+.nav a:hover{color:var(--accent)}
+
+/* card */
+.card{
+  background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:14px;
+  transition:transform var(--transition), box-shadow var(--transition);
+}
+.card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(18,38,63,0.09)}
+
+/* buttons */
+.btn{
+  display:inline-block;
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  padding:8px 12px;
+  border-radius:6px;
+  cursor:pointer;
+  text-decoration:none;
+  transition:transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+}
+.btn.secondary{background:#f3f4f6;color:#111;border:1px solid #e6e9ee}
+.btn:active{transform:translateY(1px)}
+.btn[disabled]{opacity:.6;cursor:not-allowed}
+
+/* filters & controls */
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.filter-toggle{background:#fff;border:1px solid #e6e9ee;padding:6px 10px;border-radius:6px;cursor:pointer}
+.filter-panel{overflow:hidden;transition:height var(--transition) ease,opacity var(--transition);opacity:0;height:0}
+.filter-panel.show{opacity:1;height:auto}
+
+/* table */
+.table{width:100%;border-collapse:collapse;margin-top:6px}
+.table th, .table td{
+  padding:10px 12px;
+  border-bottom:1px solid #eef2f6;
+  text-align:left;
+  transition:background var(--transition);
+}
+.table thead th{background:transparent;font-weight:600;color:var(--muted)}
+.table tbody tr{
+  transition:transform var(--transition), box-shadow var(--transition), background var(--transition);
+  transform-origin:left center;
+}
+.table tbody tr:hover{
+  transform:translateY(-4px);
+  background:linear-gradient(90deg, rgba(37,99,235,0.03), rgba(37,99,235,0.01));
+  box-shadow:0 6px 18px rgba(37,99,235,0.04);
+}
+
+/* badges */
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:.85rem}
+.badge-yes{background:var(--success);color:#fff}
+.badge-no{background:var(--danger);color:#fff}
+
+/* responsive */
+@media (max-width:900px){
+  .container{padding:12px}
+  .table th:nth-child(4), .table td:nth-child(4) {display:none} /* hide hotel on small by default */
+  .site-header{flex-direction:column;align-items:flex-start;gap:8px}
+}
+
+/* small animations */
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* utility */
+.muted{color:var(--muted)}
+.small{font-size:.9rem}
