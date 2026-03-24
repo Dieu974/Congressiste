@@ -8,7 +8,7 @@ $protectedControllers = ['congressiste', 'hotel', 'organisme'];
 
 // logout
 if (isset($_GET['action']) && $_GET['action'] === 'logout') {
-    unset($_SESSION['user']);
+    session_destroy();
     header('Location: index.php');
     exit;
 }
@@ -18,10 +18,10 @@ $loginError = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     $user = $_POST['username'] ?? '';
     $pass = $_POST['password'] ?? '';
-    $redirect = $_POST['redirect'] ?? 'index.php';
+    $redirect = 'index.php?c=congressiste&a=list';
     if ($user === 'admin' && $pass === 'admin') {
         $_SESSION['user'] = 'admin';
-        header('Location: $redirect' === '' ? $redirect : $redirect);
+        header('Location: ' . $redirect);
         exit;
     } else {
         $loginError = 'Identifiants incorrects (admin / admin)';
@@ -83,16 +83,19 @@ if (in_array($controller, $protectedControllers, true) && empty($_SESSION['user'
 $controllerName = ucfirst($controller) . "Controller";
 $controllerFile = __DIR__ . "/app/controllers/" . $controllerName . ".php";
 
-if (file_exists($controllerFile)) {
+if ($controller !== 'home' && file_exists($controllerFile)) {
     require $controllerFile;
     $ctrl = new $controllerName();
     if (method_exists($ctrl, $action)) {
         $ctrl->$action();
+        exit;
     } else {
         echo "Action introuvable";
+        exit;
     }
-} else {
+} elseif ($controller !== 'home') {
     echo "Contrôleur introuvable";
+    exit;
 }
 ?>
 <?php
@@ -109,10 +112,18 @@ if (file_exists($controllerFile)) {
   <div class="container">
     <header class="site-header">
       <div>
-        <h1 class="site-title">Application Congrès</h1>
+        <h1 class="site-title"><a href="index.php" style="text-decoration:none;color:inherit">Application Congrès</a></h1>
         <p class="muted small">Gestion des congressistes, hôtels et organismes</p>
       </div>
-      <!-- Liens supprimés -->
+      <nav class="nav">
+        <?php if (!empty($_SESSION['user'])): ?>
+            <span class="small muted">Connecté en tant que <strong><?= htmlspecialchars($_SESSION['user']) ?></strong></span>
+            <a href="index.php?c=congressiste&a=list" class="btn secondary small">Congressistes</a>
+            <a href="index.php?action=logout" class="btn secondary small" style="color:var(--danger)">Déconnexion</a>
+        <?php else: ?>
+            <a href="index.php?c=congressiste&a=list" class="btn small">Connexion</a>
+        <?php endif; ?>
+      </nav>
     </header>
 
     <main>
@@ -126,8 +137,6 @@ if (file_exists($controllerFile)) {
           <a href="index.php?c=hotel&a=list" class="btn" style="background:#10b981">Hôtels</a>
           <a href="index.php?c=organisme&a=list" class="btn" style="background:#f59e0b">Organismes</a>
         </div>
-      </section>
-        </ul>
       </section>
     </main>
   </div>

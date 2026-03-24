@@ -13,11 +13,17 @@
 <body>
     <div class="container">
         <header class="site-header">
-            <div class="site-title">Gestion des congressistes</div>
+            <div>
+                <h1 class="site-title"><a href="index.php" style="text-decoration:none;color:inherit">Gestion des congressistes</a></h1>
+                <p class="muted small">Liste complète des participants</p>
+            </div>
             <nav class="nav">
-                <a href="index.php">Accueil</a>
-                <a href="index.php?c=congressiste&a=list">Liste</a>
-                <a class="btn" href="index.php?c=congressiste&a=create">Ajouter</a>
+                <?php if (!empty($_SESSION['user'])): ?>
+                    <span class="small muted">Connecté en tant que <strong><?= htmlspecialchars($_SESSION['user']) ?></strong></span>
+                    <a href="index.php" class="btn secondary small">Accueil</a>
+                    <a href="index.php?c=congressiste&a=create" class="btn small">Ajouter</a>
+                    <a href="index.php?action=logout" class="btn secondary small" style="color:var(--danger)">Déconnexion</a>
+                <?php endif; ?>
             </nav>
         </header>
 

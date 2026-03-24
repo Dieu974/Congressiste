@@ -25,8 +25,16 @@ $organismes = $organismes ?? [];
 <body>
     <div class="container">
         <header class="site-header">
-            <div class="site-title"><?= $isEdit ? 'Modifier' : 'Créer' ?> un congressiste</div>
-            <nav class="nav"><a href="index.php?c=congressiste&a=list">Retour</a></nav>
+            <div>
+                <h1 class="site-title"><a href="index.php" style="text-decoration:none;color:inherit"><?= $isEdit ? 'Modifier' : 'Créer' ?> un congressiste</a></h1>
+                <p class="muted small">Veuillez renseigner les informations ci-dessous</p>
+            </div>
+            <nav class="nav">
+                <a href="index.php?c=congressiste&a=list" class="btn secondary small">Retour à la liste</a>
+                <?php if (!empty($_SESSION['user'])): ?>
+                    <a href="index.php?action=logout" class="btn secondary small" style="color:var(--danger)">Déconnexion</a>
+                <?php endif; ?>
+            </nav>
         </header>
 
         <div class="card">
